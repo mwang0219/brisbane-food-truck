@@ -1,7 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import { getFoodTrucks } from '@/services/api';
+import { getFoodTrucks } from '@/services/api/api';
 import { FoodTruckWithSocialUrls } from '@/types/food-truck';
 
 export function useFoodTrucks() {

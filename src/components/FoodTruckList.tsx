@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
-import { useDebounce } from '@/hooks/useDebounce';
+import { useDebounce } from '@/hooks/common/useDebounce';
 import { Loading } from '@/components/ui/loading';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { FoodTruckCard } from '@/components/FoodTruckCard';
