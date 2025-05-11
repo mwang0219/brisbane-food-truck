@@ -18,8 +18,8 @@ export function FoodTruckList() {
       const searchLower = searchQuery.toLowerCase();
       return (
         truck.name.toLowerCase().includes(searchLower) ||
-        truck.category.toLowerCase().includes(searchLower) ||
-        (truck.bio && truck.bio.toLowerCase().includes(searchLower))
+        (truck.category?.toLowerCase() || '').includes(searchLower) ||
+        (truck.bio?.toLowerCase() || '').includes(searchLower)
       );
     });
   }, [foodTrucks, searchQuery]);
@@ -70,7 +70,7 @@ export function FoodTruckList() {
                 className="w-full h-48 object-cover rounded-lg mb-4"
               />
               <h3 className="text-lg font-semibold">{truck.name}</h3>
-              <p className="text-sm text-gray-600">{truck.category}</p>
+              <p className="text-sm text-gray-600">{truck.category || '未分类'}</p>
               {truck.bio && (
                 <p className="mt-2 text-sm text-gray-500 line-clamp-3">{truck.bio}</p>
               )}
