@@ -1,45 +1,24 @@
 'use client';
 
-import { useState, useMemo } from 'react';
 import { MainLayout } from '@/components/layout/main-layout';
-import { Sidebar } from '@/components/layout/sidebar';
-import { FoodTruckList } from '@/components/FoodTruckList';
-import { useFoodTrucks } from '@/hooks/useFoodTrucks';
 import { BookingList } from '@/components/BookingList';
+import { Map } from '@/components/Map';
 
 export default function Home() {
-  const { foodTrucks } = useFoodTrucks();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // 提取所有唯一的分类
-  const categories = useMemo(() => {
-    if (!foodTrucks) return [];
-    const uniqueCategories = new Set(
-      foodTrucks
-        .map((truck) => truck.category)
-        .filter((category): category is string => !!category)
-    );
-    return Array.from(uniqueCategories).sort();
-  }, [foodTrucks]);
-
   return (
     <MainLayout>
-      <div className="flex w-full">
-        <div className="w-64 border-r">
-          <Sidebar
-            categories={categories}
-            selectedCategories={selectedCategories}
-            onCategoryChange={setSelectedCategories}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-        </div>
-        <div className="flex-1 px-4">
-          <FoodTruckList 
-            selectedCategories={selectedCategories}
-            searchQuery={searchQuery}
-          />
+      <div className="container mx-auto py-8">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* 左侧：预订列表 */}
+          <div className="bg-card rounded-lg shadow">
+            <BookingList />
+          </div>
+
+          {/* 右侧：地图 */}
+          <div className="bg-card rounded-lg shadow h-[800px]">
+            <Map />
+          </div>
         </div>
       </div>
     </MainLayout>
