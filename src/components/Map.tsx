@@ -45,7 +45,7 @@ export function Map() {
                 <div className="p-2">
                   <h3 className="font-bold text-base">{booking.title}</h3>
                   <p className="text-sm text-gray-600">
-                    {booking.street}, {booking.suburb}
+                    {booking.address}
                   </p>
                   {booking.foodTruckDetails && (
                     <div className="mt-2 pt-2 border-t">

@@ -58,7 +58,22 @@ export async function getBookings(): Promise<BookingResponse> {
     const response = await fetcher<BookingResponse>(
       `${API_ENDPOINTS.BOOKINGS}?limit=${API_LIMIT}`
     );
-    return response;
+
+    // 处理地址逻辑
+    const processedResults = response.results.map(booking => ({
+      ...booking,
+      address: booking.address || [
+        booking.street,
+        booking.suburb,
+        booking.state,
+        booking.postcode
+      ].filter(Boolean).join(', ')
+    }));
+
+    return {
+      ...response,
+      results: processedResults
+    };
   } catch (error) {
     throw handleApiError(error);
   }

@@ -44,7 +44,7 @@ export function BookingList() {
               </p>
               <p>
                 <span className="font-semibold">Location:</span>{' '}
-                {booking.street}, {booking.suburb}
+                {booking.address}
               </p>
               {booking.foodTruckDetails && (
                 <div className="mt-4 border-t pt-4">
