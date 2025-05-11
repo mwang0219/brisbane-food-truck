@@ -1,69 +1,72 @@
 'use client';
 
-import { ExternalLink, Facebook } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
-import { FoodTruck } from '@/types/api';
+import { FoodTruckWithSocialUrls } from '@/types/food-truck';
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Facebook, Instagram, Twitter, Globe } from 'lucide-react';
 
 interface FoodTruckCardProps {
-  truck: FoodTruck;
+  truck: FoodTruckWithSocialUrls;
 }
 
 export function FoodTruckCard({ truck }: FoodTruckCardProps) {
   return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex gap-4">
-          {/* 左侧图片 */}
-          <div className="flex-shrink-0">
-            <img
-              src={truck.avatar}
-              alt={truck.name}
-              className="w-20 h-20 rounded-lg object-cover"
-            />
-          </div>
-
-          {/* 右侧内容 */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-semibold text-lg truncate">{truck.name}</h3>
-                {truck.category && (
-                  <span className="inline-block px-2 py-1 text-xs bg-gray-100 rounded-full mt-1">
-                    {truck.category}
-                  </span>
-                )}
-              </div>
-              {/* 社交媒体链接 */}
-              <div className="flex gap-2 ml-2">
-                {truck.website && (
-                  <a
-                    href={truck.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-gray-700 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-                {truck.facebook_url && (
-                  <a
-                    href={truck.facebook_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-gray-700 transition-colors"
-                  >
-                    <Facebook className="w-4 h-4" />
-                  </a>
-                )}
-              </div>
-            </div>
-            {truck.bio && (
-              <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                {truck.bio}
-              </p>
+    <Card className="hover:shadow-lg transition-shadow duration-200">
+      <CardContent className="p-4 flex items-center gap-4">
+        <Avatar className="h-16 w-16">
+          <AvatarImage src={truck.avatar || ''} alt={truck.name} />
+          <AvatarFallback>{truck.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-lg truncate">{truck.name}</h3>
+          <p className="text-sm text-muted-foreground truncate">
+            {truck.category || '未分类'}
+          </p>
+          {truck.bio && (
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+              {truck.bio}
+            </p>
+          )}
+          <div className="flex gap-2 mt-2">
+            {truck.website && (
+              <a
+                href={truck.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Globe className="h-4 w-4" />
+              </a>
+            )}
+            {truck.instagram_url && (
+              <a
+                href={truck.instagram_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
+            )}
+            {truck.twitter_url && (
+              <a
+                href={truck.twitter_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Twitter className="h-4 w-4" />
+              </a>
+            )}
+            {truck.facebook_url && (
+              <a
+                href={truck.facebook_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Facebook className="h-4 w-4" />
+              </a>
             )}
           </div>
         </div>

@@ -1,22 +1,21 @@
 export interface FoodTruck {
   truck_id: string;
   name: string;
-  category: string;
+  category: string | null;
   bio: string | null;
-  avatar: string;
-  cover_photo: string;
+  avatar: string | null;
   website: string | null;
-  facebook_url: string | null;
   instagram_handle: string | null;
   twitter_handle: string | null;
+  facebook_url: string | null;
 }
 
 export interface FoodTruckResponse {
-  total_count: number;
   results: FoodTruck[];
+  total: number;
 }
 
 export interface ApiError {
   message: string;
-  status?: number;
+  code: string;
 } 
