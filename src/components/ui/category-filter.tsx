@@ -20,14 +20,19 @@ export function CategoryFilter({
   selectedCategory,
   onCategoryChange,
 }: CategoryFilterProps) {
+  // 对分类进行字母顺序排序，使用澳大利亚英语
+  const sortedCategories = React.useMemo(() => {
+    return [...categories].sort((a, b) => a.localeCompare(b, 'en-AU'));
+  }, [categories]);
+
   return (
     <Select value={selectedCategory} onValueChange={onCategoryChange}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="选择分类" />
+        <SelectValue placeholder="Select Category" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">全部</SelectItem>
-        {categories.map((category) => (
+        <SelectItem value="all">All</SelectItem>
+        {sortedCategories.map((category) => (
           <SelectItem key={category} value={category}>
             {category}
           </SelectItem>
