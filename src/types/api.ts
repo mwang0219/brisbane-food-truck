@@ -20,32 +20,6 @@ export interface ApiError {
   code: string;
 }
 
-export interface Site {
-  site_id: string;
-  title: string;
-  description: string;
-  street: string;
-  suburb: string;
-  state: string;
-  postcode: string;
-  country: string;
-  latitude: number;
-  longitude: number;
-  spots: number;
-  cost: string;
-  image: string | null;
-  map: string | null;
-  geopoint: {
-    lon: number;
-    lat: number;
-  };
-}
-
-export interface SiteResponse {
-  total_count: number;
-  results: Site[];
-}
-
 export interface Booking {
   type: string;
   title: string;
