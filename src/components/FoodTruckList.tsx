@@ -1,3 +1,5 @@
+'use client';
+
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
 import { Button } from '@/components/ui/button';
 

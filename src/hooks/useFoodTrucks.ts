@@ -1,3 +1,5 @@
+'use client';
+
 import useSWR from 'swr';
 import { FoodTruck, FoodTruckResponse } from '@/types/api';
 import { API_ENDPOINTS, API_LIMIT } from '@/config/api';
