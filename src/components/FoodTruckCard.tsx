@@ -11,9 +11,9 @@ interface FoodTruckCardProps {
 
 export function FoodTruckCard({ truck }: FoodTruckCardProps) {
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
-      <CardContent className="p-4 flex items-center gap-4">
-        <Avatar className="h-16 w-16">
+    <Card className="relative transition-all duration-300 ease-in-out hover:-translate-y-1 hover:z-10 hover:shadow-lg">
+      <CardContent className="p-4 flex items-start gap-4">
+        <Avatar className="h-16 w-16 flex-shrink-0">
           <AvatarImage src={truck.avatar || ''} alt={truck.name} />
           <AvatarFallback>{truck.name.slice(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
@@ -23,7 +23,7 @@ export function FoodTruckCard({ truck }: FoodTruckCardProps) {
             {truck.category || '未分类'}
           </p>
           {truck.bio && (
-            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2 hover:line-clamp-none transition-all duration-300">
               {truck.bio}
             </p>
           )}
