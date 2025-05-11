@@ -76,6 +76,18 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+
+  /* 🎨 Custom brand palette */
+  --brand-1: #F6BD60;
+  /* Hunyadi yellow */
+  --brand-2: #F7EDE2;
+  /* Linen */
+  --brand-3: #F5CAC3;
+  /* Tea rose red */
+  --brand-4: #84A59D;
+  /* Cambridge blue */
+  --brand-5: #F28482;
+  /* Light coral */
 }
 
 .dark {
@@ -110,12 +122,18 @@
   --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.553 0.013 58.071);
+  --brand-1: #f6bd60;
+  --brand-2: #f7ede2;
+  --brand-3: #f5cac3;
+  --brand-4: #84a59d;
+  --brand-5: #f28482;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
