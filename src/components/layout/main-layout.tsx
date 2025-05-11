@@ -15,14 +15,8 @@ export function MainLayout({ children }: MainLayoutProps) {
         </div>
       </header>
 
-      <div className="flex-1 flex">
-        <aside className="w-64 border-r p-4">
-          {/* 左侧栏内容将在这里 */}
-        </aside>
-
-        <main className="flex-1 p-4">
-          {children}
-        </main>
+      <div className="flex-1">
+        {children}
       </div>
 
       <footer className="border-t">
