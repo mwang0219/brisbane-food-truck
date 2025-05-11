@@ -1,9 +1,10 @@
-import { ApiError, FoodTruckResponse, BookingResponse } from '@/types/api';
+import { ApiError, FoodTruckResponse, BookingResponse, BookingResponseWithTrucks } from '@/types/api';
 import { API_ENDPOINTS, API_LIMIT } from '@/config/api';
 import { fetcher } from '@/lib/fetcher';
 import { handleApiError } from '@/utils/error-handler';
 import { extendFoodTruckWithSocialUrls } from '@/utils/social-media';
 import { FoodTruckWithSocialUrls } from '@/types/food-truck';
+import { mapBookingsWithTrucks } from '@/utils/booking-mapper';
 
 export class ApiService {
   private static async fetchWithErrorHandling<T>(
@@ -58,6 +59,24 @@ export async function getBookings(): Promise<BookingResponse> {
       `${API_ENDPOINTS.BOOKINGS}?limit=${API_LIMIT}`
     );
     return response;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+}
+
+/**
+ * Combines bookings with food truck details
+ * This function is meant to be used with React Query's useQueries
+ */
+export async function getBookingsWithTrucks(
+  foodTrucks: FoodTruckWithSocialUrls[]
+): Promise<BookingResponseWithTrucks> {
+  try {
+    const bookingsResponse = await getBookings();
+    return {
+      total_count: bookingsResponse.total_count,
+      results: mapBookingsWithTrucks(bookingsResponse.results, foodTrucks)
+    };
   } catch (error) {
     throw handleApiError(error);
   }

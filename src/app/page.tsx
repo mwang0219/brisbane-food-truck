@@ -5,6 +5,7 @@ import { MainLayout } from '@/components/layout/main-layout';
 import { Sidebar } from '@/components/layout/sidebar';
 import { FoodTruckList } from '@/components/FoodTruckList';
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
+import { BookingList } from '@/components/BookingList';
 
 export default function Home() {
   const { foodTrucks } = useFoodTrucks();

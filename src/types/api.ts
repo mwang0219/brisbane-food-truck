@@ -49,4 +49,13 @@ export interface Booking {
 export interface BookingResponse {
   total_count: number;
   results: Booking[];
+}
+
+export interface BookingWithTruck extends Booking {
+  foodTruckDetails?: FoodTruck;
+}
+
+export interface BookingResponseWithTrucks {
+  total_count: number;
+  results: BookingWithTruck[];
 } 
