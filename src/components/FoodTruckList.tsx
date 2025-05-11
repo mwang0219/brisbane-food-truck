@@ -1,20 +1,19 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Loading } from '@/components/ui/loading';
 import { ErrorMessage } from '@/components/ui/error-message';
-import { Search } from '@/components/ui/search';
 import { FoodTruck } from '@/types/api';
 
 interface FoodTruckListProps {
   selectedCategories: string[];
+  searchQuery: string;
 }
 
-export function FoodTruckList({ selectedCategories }: FoodTruckListProps) {
+export function FoodTruckList({ selectedCategories, searchQuery }: FoodTruckListProps) {
   const { foodTrucks, isLoading, isError, mutate } = useFoodTrucks();
-  const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   const filteredTrucks = useMemo(() => {
@@ -57,15 +56,7 @@ export function FoodTruckList({ selectedCategories }: FoodTruckListProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="max-w-md">
-        <Search
-          value={searchQuery}
-          onChange={setSearchQuery}
-          placeholder="搜索美食车名称、类别或描述..."
-        />
-      </div>
-
+    <div>
       {filteredTrucks.length === 0 ? (
         <ErrorMessage message="没有找到匹配的美食车" />
       ) : (

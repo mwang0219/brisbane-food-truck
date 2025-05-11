@@ -9,6 +9,7 @@ import { useFoodTrucks } from '@/hooks/useFoodTrucks';
 export default function Home() {
   const { foodTrucks } = useFoodTrucks();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // 提取所有唯一的分类
   const categories = useMemo(() => {
@@ -23,14 +24,21 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="flex h-full">
-        <Sidebar
-          categories={categories}
-          selectedCategories={selectedCategories}
-          onCategoryChange={setSelectedCategories}
-        />
-        <div className="flex-1">
-          <FoodTruckList selectedCategories={selectedCategories} />
+      <div className="flex w-full">
+        <div className="w-64 border-r">
+          <Sidebar
+            categories={categories}
+            selectedCategories={selectedCategories}
+            onCategoryChange={setSelectedCategories}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+        </div>
+        <div className="flex-1 px-4">
+          <FoodTruckList 
+            selectedCategories={selectedCategories}
+            searchQuery={searchQuery}
+          />
         </div>
       </div>
     </MainLayout>

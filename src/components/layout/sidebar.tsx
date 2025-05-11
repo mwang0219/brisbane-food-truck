@@ -3,17 +3,22 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Search } from '@/components/ui/search';
 
 interface SidebarProps {
   categories: string[];
   selectedCategories: string[];
   onCategoryChange: (categories: string[]) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
 export function Sidebar({
   categories,
   selectedCategories,
   onCategoryChange,
+  searchQuery,
+  onSearchChange,
 }: SidebarProps) {
   const handleCategoryToggle = (category: string) => {
     const newSelectedCategories = selectedCategories.includes(category)
@@ -23,10 +28,19 @@ export function Sidebar({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
+      <div>
+        <h2 className="text-lg font-semibold mb-4">搜索</h2>
+        <Search
+          value={searchQuery}
+          onChange={onSearchChange}
+          placeholder="搜索美食车名称、类别或描述..."
+        />
+      </div>
+
       <div>
         <h2 className="text-lg font-semibold mb-4">分类筛选</h2>
-        <ScrollArea className="h-[calc(100vh-12rem)]">
+        <ScrollArea className="h-[calc(100vh-16rem)]">
           <div className="space-y-2">
             {categories.map((category) => (
               <div key={category} className="flex items-center space-x-2">
