@@ -59,9 +59,12 @@ export async function getBookings(): Promise<BookingResponse> {
       `${API_ENDPOINTS.BOOKINGS}?limit=${API_LIMIT}`
     );
 
-    // 处理地址逻辑
+    // 处理数据逻辑
     const processedResults = response.results.map(booking => ({
       ...booking,
+      // 如果 truck_id 为空，则使用 food_truck 的值
+      truck_id: booking.truck_id || booking.food_truck,
+      // 处理地址逻辑
       address: booking.address || [
         booking.street,
         booking.suburb,
