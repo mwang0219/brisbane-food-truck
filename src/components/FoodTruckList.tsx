@@ -5,7 +5,7 @@ import { useFoodTrucks } from '@/hooks/useFoodTrucks';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Loading } from '@/components/ui/loading';
 import { ErrorMessage } from '@/components/ui/error-message';
-import { FoodTruck } from '@/types/api';
+import { FoodTruckCard } from '@/components/FoodTruckCard';
 
 interface FoodTruckListProps {
   selectedCategories: string[];
@@ -62,21 +62,7 @@ export function FoodTruckList({ selectedCategories, searchQuery }: FoodTruckList
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTrucks.map((truck) => (
-            <div
-              key={truck.truck_id}
-              className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow"
-            >
-              <img
-                src={truck.avatar}
-                alt={truck.name}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-semibold">{truck.name}</h3>
-              <p className="text-sm text-gray-600">{truck.category || '未分类'}</p>
-              {truck.bio && (
-                <p className="mt-2 text-sm text-gray-500 line-clamp-3">{truck.bio}</p>
-              )}
-            </div>
+            <FoodTruckCard key={truck.truck_id} truck={truck} />
           ))}
         </div>
       )}
