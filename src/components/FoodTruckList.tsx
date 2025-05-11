@@ -6,25 +6,16 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { Loading } from '@/components/ui/loading';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { Search } from '@/components/ui/search';
-import { CategoryFilter } from '@/components/ui/category-filter';
 import { FoodTruck } from '@/types/api';
 
-export function FoodTruckList() {
+interface FoodTruckListProps {
+  selectedCategories: string[];
+}
+
+export function FoodTruckList({ selectedCategories }: FoodTruckListProps) {
   const { foodTrucks, isLoading, isError, mutate } = useFoodTrucks();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
-
-  // 提取所有唯一的分类
-  const categories = useMemo(() => {
-    if (!foodTrucks) return [];
-    const uniqueCategories = new Set(
-      foodTrucks
-        .map((truck) => truck.category)
-        .filter((category): category is string => !!category)
-    );
-    return Array.from(uniqueCategories).sort();
-  }, [foodTrucks]);
 
   const filteredTrucks = useMemo(() => {
     if (!foodTrucks) return [];
@@ -36,11 +27,13 @@ export function FoodTruckList() {
         (truck.category?.toLowerCase() || '').includes(searchLower) ||
         (truck.bio?.toLowerCase() || '').includes(searchLower);
       
-      const matchesCategory = selectedCategory === 'all' || truck.category === selectedCategory;
+      const matchesCategory = 
+        selectedCategories.length === 0 || 
+        (truck.category && selectedCategories.includes(truck.category));
       
       return matchesSearch && matchesCategory;
     });
-  }, [foodTrucks, debouncedSearchQuery, selectedCategory]);
+  }, [foodTrucks, debouncedSearchQuery, selectedCategories]);
 
   if (isLoading) {
     return <Loading />;
@@ -65,18 +58,11 @@ export function FoodTruckList() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <div className="w-full sm:w-auto">
-          <Search
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="搜索美食车名称、类别或描述..."
-          />
-        </div>
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
+      <div className="max-w-md">
+        <Search
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="搜索美食车名称、类别或描述..."
         />
       </div>
 
