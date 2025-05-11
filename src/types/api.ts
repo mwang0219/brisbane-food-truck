@@ -18,4 +18,61 @@ export interface FoodTruckResponse {
 export interface ApiError {
   message: string;
   code: string;
+}
+
+export interface Site {
+  site_id: string;
+  title: string;
+  description: string;
+  street: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  spots: number;
+  cost: string;
+  image: string | null;
+  map: string | null;
+  geopoint: {
+    lon: number;
+    lat: number;
+  };
+}
+
+export interface SiteResponse {
+  total_count: number;
+  results: Site[];
+}
+
+export interface Booking {
+  type: string;
+  title: string;
+  food_truck: string | null;
+  start: string;
+  finish: string;
+  address: string | null;
+  geolocation: string | null;
+  truck_id: string | null;
+  site_id: string | null;
+  geolocation_coordinates: string | null;
+  longitude: number;
+  latitude: number;
+  street: string | null;
+  suburb: string | null;
+  state: string | null;
+  postcode: string | null;
+  geopoint: {
+    lon: number;
+    lat: number;
+  };
+  name: string | null;
+  category: string | null;
+  bio: string | null;
+}
+
+export interface BookingResponse {
+  total_count: number;
+  results: Booking[];
 } 

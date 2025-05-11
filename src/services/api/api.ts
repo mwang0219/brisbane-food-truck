@@ -1,4 +1,4 @@
-import { ApiError, FoodTruckResponse } from '@/types/api';
+import { ApiError, FoodTruckResponse, SiteResponse, BookingResponse } from '@/types/api';
 import { API_ENDPOINTS, API_LIMIT } from '@/config/api';
 import { fetcher } from '@/lib/fetcher';
 import { handleApiError } from '@/utils/error-handler';
@@ -47,6 +47,28 @@ export async function getFoodTrucks(): Promise<FoodTruckWithSocialUrls[]> {
     const allTrucks = [...firstBatch.results, ...secondBatch.results]
       .filter(truck => truck.truck_id !== "47641");
     return allTrucks.map(extendFoodTruckWithSocialUrls);
+  } catch (error) {
+    throw handleApiError(error);
+  }
+}
+
+export async function getSites(): Promise<SiteResponse> {
+  try {
+    const response = await fetcher<SiteResponse>(
+      `${API_ENDPOINTS.SITES}?limit=${API_LIMIT}`
+    );
+    return response;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+}
+
+export async function getBookings(): Promise<BookingResponse> {
+  try {
+    const response = await fetcher<BookingResponse>(
+      `${API_ENDPOINTS.BOOKINGS}?limit=${API_LIMIT}`
+    );
+    return response;
   } catch (error) {
     throw handleApiError(error);
   }
