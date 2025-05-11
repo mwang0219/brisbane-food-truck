@@ -1,7 +1,9 @@
-import { ApiError } from '@/types/api';
-import { FoodTruckResponse } from '@/types/api';
+import { ApiError, FoodTruckResponse } from '@/types/api';
 import { API_ENDPOINTS, API_LIMIT } from '@/config/api';
 import { fetcher } from '@/lib/fetcher';
+import { handleApiError } from '@/utils/error-handler';
+import { extendFoodTruckWithSocialUrls } from '@/utils/social-media';
+import { FoodTruckWithSocialUrls } from '@/types/food-truck';
 
 export class ApiService {
   private static async fetchWithErrorHandling<T>(
@@ -12,16 +14,12 @@ export class ApiService {
       const response = await fetch(url, options);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw response;
       }
       
       return await response.json();
     } catch (error) {
-      const apiError: ApiError = {
-        message: error instanceof Error ? error.message : 'An unknown error occurred',
-        code: error instanceof Response ? `HTTP_${error.status}` : 'UNKNOWN_ERROR'
-      };
-      throw apiError;
+      throw handleApiError(error);
     }
   }
 
@@ -33,20 +31,22 @@ export class ApiService {
   }
 }
 
-export async function getFoodTrucks(): Promise<FoodTruckResponse> {
-  // First batch
-  const firstBatch = await fetcher<FoodTruckResponse>(
-    `${API_ENDPOINTS.FOOD_TRUCKS}?limit=${API_LIMIT}&offset=0`
-  );
+export async function getFoodTrucks(): Promise<FoodTruckWithSocialUrls[]> {
+  try {
+    // First batch
+    const firstBatch = await fetcher<FoodTruckResponse>(
+      `${API_ENDPOINTS.FOOD_TRUCKS}?limit=${API_LIMIT}&offset=0`
+    );
 
-  // Second batch
-  const secondBatch = await fetcher<FoodTruckResponse>(
-    `${API_ENDPOINTS.FOOD_TRUCKS}?limit=${API_LIMIT}&offset=${API_LIMIT}`
-  );
+    // Second batch
+    const secondBatch = await fetcher<FoodTruckResponse>(
+      `${API_ENDPOINTS.FOOD_TRUCKS}?limit=${API_LIMIT}&offset=${API_LIMIT}`
+    );
 
-  // Combine results
-  return {
-    results: [...firstBatch.results, ...secondBatch.results],
-    total: firstBatch.total + secondBatch.total
-  };
+    // Combine and transform results
+    const allTrucks = [...firstBatch.results, ...secondBatch.results];
+    return allTrucks.map(extendFoodTruckWithSocialUrls);
+  } catch (error) {
+    throw handleApiError(error);
+  }
 } 

@@ -41,7 +41,10 @@ export function FoodTruckList({ selectedCategories, searchQuery }: FoodTruckList
   if (isError) {
     return (
       <ErrorMessage
-        message="加载美食车数据时发生错误"
+        error={{
+          message: "加载美食车数据时发生错误",
+          code: "LOAD_ERROR"
+        }}
         onRetry={() => mutate()}
       />
     );
@@ -50,7 +53,10 @@ export function FoodTruckList({ selectedCategories, searchQuery }: FoodTruckList
   if (!foodTrucks?.length) {
     return (
       <ErrorMessage
-        message="暂无美食车数据"
+        error={{
+          message: "暂无美食车数据",
+          code: "NO_DATA"
+        }}
       />
     );
   }
@@ -58,7 +64,12 @@ export function FoodTruckList({ selectedCategories, searchQuery }: FoodTruckList
   return (
     <div>
       {filteredTrucks.length === 0 ? (
-        <ErrorMessage message="没有找到匹配的美食车" />
+        <ErrorMessage
+          error={{
+            message: "没有找到匹配的美食车",
+            code: "NO_MATCH"
+          }}
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTrucks.map((truck) => (
