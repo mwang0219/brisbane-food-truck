@@ -1,26 +1,31 @@
 'use client';
 
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
-import { Button } from '@/components/ui/button';
+import { Loading } from '@/components/ui/loading';
+import { ErrorMessage } from '@/components/ui/error-message';
 
 export function FoodTruckList() {
   const { foodTrucks, isLoading, isError, mutate } = useFoodTrucks();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (isError) {
     return (
-      <div className="flex flex-col items-center gap-4">
-        <p>Error loading food trucks</p>
-        <Button onClick={() => mutate()}>Retry</Button>
-      </div>
+      <ErrorMessage
+        message="加载美食车数据时发生错误"
+        onRetry={() => mutate()}
+      />
     );
   }
 
   if (!foodTrucks?.length) {
-    return <div>No food trucks found</div>;
+    return (
+      <ErrorMessage
+        message="暂无美食车数据"
+      />
+    );
   }
 
   return (
