@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
+import { useDebounce } from '@/hooks/useDebounce';
 import { Loading } from '@/components/ui/loading';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { Search } from '@/components/ui/search';
@@ -10,19 +11,20 @@ import { FoodTruck } from '@/types/api';
 export function FoodTruckList() {
   const { foodTrucks, isLoading, isError, mutate } = useFoodTrucks();
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 300); // 300ms 防抖延迟
 
   const filteredTrucks = useMemo(() => {
     if (!foodTrucks) return [];
     
     return foodTrucks.filter((truck) => {
-      const searchLower = searchQuery.toLowerCase();
+      const searchLower = debouncedSearchQuery.toLowerCase();
       return (
         truck.name.toLowerCase().includes(searchLower) ||
         (truck.category?.toLowerCase() || '').includes(searchLower) ||
         (truck.bio?.toLowerCase() || '').includes(searchLower)
       );
     });
-  }, [foodTrucks, searchQuery]);
+  }, [foodTrucks, debouncedSearchQuery]);
 
   if (isLoading) {
     return <Loading />;
