@@ -43,8 +43,9 @@ export async function getFoodTrucks(): Promise<FoodTruckWithSocialUrls[]> {
       `${API_ENDPOINTS.FOOD_TRUCKS}?limit=${API_LIMIT}&offset=${API_LIMIT}`
     );
 
-    // Combine and transform results
-    const allTrucks = [...firstBatch.results, ...secondBatch.results];
+    // Combine and transform results, filter out truck_id "47641"
+    const allTrucks = [...firstBatch.results, ...secondBatch.results]
+      .filter(truck => truck.truck_id !== "47641");
     return allTrucks.map(extendFoodTruckWithSocialUrls);
   } catch (error) {
     throw handleApiError(error);
