@@ -1,11 +1,28 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import { useFoodTrucks } from '@/hooks/useFoodTrucks';
 import { Loading } from '@/components/ui/loading';
 import { ErrorMessage } from '@/components/ui/error-message';
+import { Search } from '@/components/ui/search';
+import { FoodTruck } from '@/types/api';
 
 export function FoodTruckList() {
   const { foodTrucks, isLoading, isError, mutate } = useFoodTrucks();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTrucks = useMemo(() => {
+    if (!foodTrucks) return [];
+    
+    return foodTrucks.filter((truck) => {
+      const searchLower = searchQuery.toLowerCase();
+      return (
+        truck.name.toLowerCase().includes(searchLower) ||
+        truck.category.toLowerCase().includes(searchLower) ||
+        (truck.bio && truck.bio.toLowerCase().includes(searchLower))
+      );
+    });
+  }, [foodTrucks, searchQuery]);
 
   if (isLoading) {
     return <Loading />;
@@ -29,24 +46,38 @@ export function FoodTruckList() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {foodTrucks.map((truck) => (
-        <div
-          key={truck.truck_id}
-          className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow"
-        >
-          <img
-            src={truck.avatar}
-            alt={truck.name}
-            className="w-full h-48 object-cover rounded-lg mb-4"
-          />
-          <h3 className="text-lg font-semibold">{truck.name}</h3>
-          <p className="text-sm text-gray-600">{truck.category}</p>
-          {truck.bio && (
-            <p className="mt-2 text-sm text-gray-500 line-clamp-3">{truck.bio}</p>
-          )}
+    <div className="space-y-6">
+      <div className="max-w-md mx-auto">
+        <Search
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="搜索美食车名称、类别或描述..."
+        />
+      </div>
+
+      {filteredTrucks.length === 0 ? (
+        <ErrorMessage message="没有找到匹配的美食车" />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredTrucks.map((truck) => (
+            <div
+              key={truck.truck_id}
+              className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            >
+              <img
+                src={truck.avatar}
+                alt={truck.name}
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
+              <h3 className="text-lg font-semibold">{truck.name}</h3>
+              <p className="text-sm text-gray-600">{truck.category}</p>
+              {truck.bio && (
+                <p className="mt-2 text-sm text-gray-500 line-clamp-3">{truck.bio}</p>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 } 
